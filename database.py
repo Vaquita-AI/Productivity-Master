@@ -1,6 +1,6 @@
 import os
 import time
-
+from pathlib import Path
 
 def batch_rename(directory, pattern, replace_with):
     """
@@ -51,3 +51,52 @@ def pomodoro_timer(work_time=25, break_time=5):
 
 # Run the Pomodoro timer
 pomodoro_timer()
+
+
+
+def organize_downloads(download_path):
+    """
+    Organize files in the download directory into subfolders based on file extensions.
+
+    :param download_path: The path to your downloads directory.
+    """
+    # Create a mapping of file extensions to directory names
+    extension_paths = {
+        '.jpg': 'Images',
+        '.jpeg': 'Images',
+        '.png': 'Images',
+        '.gif': 'Images',
+        '.pdf': 'Documents',
+        '.txt': 'Documents',
+        '.docx': 'Documents',
+        '.xlsx': 'Spreadsheets',
+        '.csv': 'Spreadsheets',
+        '.zip': 'Compressed',
+        '.tar.gz': 'Compressed',
+        '.mp4': 'Videos',
+        '.mp3': 'Audio',
+        # Add more file types and folders as needed
+    }
+
+    # Ensure the download_path is a Path object
+    download_path = Path(download_path)
+
+    # Loop through all files in the download directory
+    for file in download_path.iterdir():
+        if file.is_file():
+            # Get the file extension and find the corresponding folder
+            extension = file.suffix.lower()
+            subfolder_name = extension_paths.get(extension, 'Others')
+            folder_path = download_path / subfolder_name
+
+            # Create the folder if it doesn't exist
+            folder_path.mkdir(exist_ok=True)
+
+            # Move the file into the corresponding folder
+            file.rename(folder_path / file.name)
+
+    print(f"Files in '{download_path}' have been organized.")
+
+# Example usage:
+# Replace 'path_to_downloads' with the actual path to your downloads folder
+organize_downloads('path_to_downloads')
