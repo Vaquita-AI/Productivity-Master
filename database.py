@@ -1,6 +1,10 @@
 import os
 import time
+import heapq
+import re
 from pathlib import Path
+from collections import defaultdict
+
 
 def batch_rename(directory, pattern, replace_with):
     """
@@ -100,3 +104,42 @@ def organize_downloads(download_path):
 # Example usage:
 # Replace 'path_to_downloads' with the actual path to your downloads folder
 organize_downloads('path_to_downloads')
+
+def summarize_text(text, num_sentences=5):
+    """
+    Summarize the given text by extracting the most relevant sentences.
+
+    :param text: The text to be summarized.
+    :param num_sentences: The number of sentences to include in the summary.
+    :return: A summary of the text.
+    """
+    # Split the text into sentences
+    sentences = re.split(r'(?<=[.!?]) +', text)
+
+    # Calculate the frequency of each word
+    word_frequencies = defaultdict(int)
+    for sentence in sentences:
+        for word in re.findall(r'\w+', sentence.lower()):
+            word_frequencies[word] += 1
+
+    # Calculate the score for each sentence
+    sentence_scores = {}
+    for sentence in sentences:
+        for word in re.findall(r'\w+', sentence.lower()):
+            if word in word_frequencies:
+                if sentence not in sentence_scores:
+                    sentence_scores[sentence] = word_frequencies[word]
+                else:
+                    sentence_scores[sentence] += word_frequencies[word]
+
+    # Get the most relevant sentences
+    summary_sentences = heapq.nlargest(num_sentences, sentence_scores, key=sentence_scores.get)
+
+    # Return the summary
+    return ' '.join(summary_sentences)
+
+# Example usage:
+text_to_summarize = """
+Artificial intelligence (AI) refers to the simulation of human intelligence in machines that are programmed to think like humans and mimic their actions. The term may also be applied to any machine that exhibits traits associated with a human mind such as learning and problem-solving. The ideal characteristic of artificial intelligence is its ability to rationalize and take actions that have the best chance of achieving a specific goal. A subset of artificial intelligence is machine learning, which refers to the concept that computer programs can automatically learn from and adapt to new data without being assisted by humans. Deep learning techniques enable this automatic learning through the absorption of huge amounts of unstructured data such as text, images, or video.
+"""
+print(summarize_text(text_to_summarize))
