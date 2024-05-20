@@ -184,3 +184,34 @@ def list_directory_contents(path):
         print(f"An OS error occurred: {e}")
 # Example usage:
 # list_directory_contents('your_directory_path')
+
+
+def timestamp_rename_files(directory, extension):
+    """
+    Searches for files with a given extension within the directory and its subdirectories,
+    and renames them by appending a timestamp to their names.
+
+    :param directory: The root directory to search for files.
+    :param extension: The file extension to look for.
+    """
+    timestamp = time.strftime("%Y%m%d-%H%M%S")
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            if file.endswith(extension):
+                old_path = os.path.join(root, file)
+                # Split the file into name and extension
+                file_name, file_extension = os.path.splitext(file)
+                # Create a new name with the timestamp
+                new_name = f"{file_name}_{timestamp}{file_extension}"
+                new_path = os.path.join(root, new_name)
+                try:
+                    # Rename the file
+                    os.rename(old_path, new_path)
+                    print(f"Renamed '{old_path}' to '{new_path}'")
+                except OSError as error:
+                    print(f"Error renaming file {old_path}: {error}")
+
+# Example usage:
+# Replace 'your_directory_path' with the path of the directory you want to search
+# Replace '.txt' with the file extension you are targeting
+# timestamp_rename_files('your_directory_path', '.txt')
