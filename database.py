@@ -158,3 +158,29 @@ def generate_silly_pet_name():
 
 # Example usage:
 print(generate_silly_pet_name())
+
+
+def list_directory_contents(path):
+    """
+    Lists the files and directories in the given path.
+
+    :param path: The directory path to list contents from.
+    """
+    try:
+        # Get the list of all files and directories
+        directory_contents = os.listdir(path)
+        
+        # Print the names of the files and directories
+        for entry in directory_contents:
+            print(entry)
+            
+    except FileNotFoundError:
+        print(f"The directory {path} does not exist.")
+    except NotADirectoryError:
+        print(f"{path} is not a directory.")
+    except PermissionError:
+        print(f"Permission denied to access the directory {path}.")
+    except OSError as e:
+        print(f"An OS error occurred: {e}")
+# Example usage:
+# list_directory_contents('your_directory_path')
