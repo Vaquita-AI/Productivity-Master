@@ -1,0 +1,33 @@
+import numpy as np
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+import matplotlib.pyplot as plt
+
+# Simulate a dataset with comprehensible features
+np.random.seed(0)
+data = {
+    'Project Size': pd.cut(np.random.randint(1, 11, size=100), bins=[0, 5, 10], labels=['Small', 'Large']),
+    'Estimated Cost': pd.cut(np.random.randint(1000, 5000, size=100), bins=[999, 2500, 5000], labels=['Low', 'High']),
+    'Team Efficiency': pd.cut(np.random.rand(100), bins=[0, 0.5, 1], labels=['Inefficient', 'Efficient']),
+    'Resource Allocation': pd.cut(np.random.randint(1, 100, size=100), bins=[0, 50, 100], labels=['Adequate', 'Excessive']),
+    'Cost Overrun': np.random.choice(['No', 'Yes'], size=100)
+}
+
+df = pd.DataFrame(data)
+
+# Convert categorical variables to numerical using one-hot encoding
+df_encoded = pd.get_dummies(df, columns=['Project Size', 'Estimated Cost', 'Team Efficiency', 'Resource Allocation'])
+
+# Define the features and the target after encoding
+X_encoded = df_encoded.drop('Cost Overrun', axis=1)
+y = df_encoded['Cost Overrun']
+
+# Create and train the decision tree classifier
+tree_clf = DecisionTreeClassifier(max_depth=2, random_state=3)
+tree_clf.fit(X_encoded, y)
+
+# Plot the decision tree
+plt.figure(figsize=(20,10))
+plot_tree(tree_clf, feature_names=X_encoded.columns, class_names=['No Overrun', 'Overrun'], 
+          filled=True, rounded=True, proportion=False, precision=2)
+plt.show()
