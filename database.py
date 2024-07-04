@@ -149,15 +149,7 @@ def generate_silly_pet_name():
     """
     Generate a random silly name for a pet by combining an adjective with an animal name.
     """
-    adjectives = ["Fluffy", "Scruffy", "Bouncy", "Sneaky", "Drowsy", "Jolly", "Loopy", "Zippy", "Twinkly", "Glimmering"]
-    animals = ["Wombat", "Penguin", "Koala", "Giraffe", "Hippo", "Unicorn", "Dragon", "Sloth", "Kangaroo", "Panda"]
-
-    adjective = random.choice(adjectives)
-    animal = random.choice(animals)
-    return f"{adjective} {animal}"
-
-# Example usage:
-print(generate_silly_pet_name())
+  
 
 
 def list_directory_contents(path):
