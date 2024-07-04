@@ -144,9 +144,6 @@ Artificial intelligence (AI) refers to the simulation of human intelligence in m
 """
 print(summarize_text(text_to_summarize))
 
-
-def generate_silly_pet_name():
-
   
 
 
