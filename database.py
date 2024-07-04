@@ -146,9 +146,7 @@ print(summarize_text(text_to_summarize))
 
 
 def generate_silly_pet_name():
-    """
-    Generate a random silly name for a pet by combining an adjective with an animal name.
-    """
+
   
 
 
